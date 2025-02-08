@@ -1,19 +1,18 @@
 {
     "name": "NBAStatisticsApp",
+    "build": {
+        "dockerfile": "Dockerfile"
+      },
     "features": {
       // 1) Docker-in-Docker Feature: adds docker & docker CLI
       "ghcr.io/devcontainers/features/docker-in-docker:1": {
         "version": "latest"
       },
-      // 2) Install kubectl
-      "ghcr.io/devcontainers/features/kubectl:1": {
-        "version": "latest"
-      },
-      // 3) Install kind
+      // 2) Install kind
       "ghcr.io/devcontainers/features/kind:1": {
         "version": "latest"
       },
-      // 4) Install Go
+      // 3) Install Go
       "ghcr.io/devcontainers/features/go:1": {
         "version": "1.20"
       }
