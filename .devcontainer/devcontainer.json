@@ -1,7 +1,8 @@
 {
     "name": "NBAStatisticsApp",
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+        "context": "."
     },
     "privileged": true,
     // Forward any ports you might need
