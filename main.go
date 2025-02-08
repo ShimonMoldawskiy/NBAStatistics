@@ -4,21 +4,30 @@ package main
 // The project is located at "github.com/ShimonMoldawskiy/NBAStatistics".
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"golang.org/x/net/context"
 
 	"github.com/ShimonMoldawskiy/NBAStatistics/cache"
 	"github.com/ShimonMoldawskiy/NBAStatistics/db"
-)
-
-var (
-	ctx = context.Background()
+	"github.com/ShimonMoldawskiy/NBAStatistics/nba"
 )
 
 func main() {
+	ctx, cfn := context.WithCancelCause(context.Background())
+	defer cfn(nil)
+
+	defer func() {
+		if err := recover(); err != nil {
+			err := fmt.Errorf("panic in main, err: %v", err)
+			cfn(err)
+			log.Fatal(ctx, err)
+		}
+	}()
+
 	// Initialize db connection
 	var err error
 	db, err := db.NewPostgresDatabase(ctx, "postgresql://user:password@primary-db-host/dbname")
@@ -35,15 +44,18 @@ func main() {
 	defer cache.Close()
 
 	// Initialize NBAStatistics
-	nba := NewNBAStatistics(cache, db)
+	nba, err := nba.NewNBAStatistics(cache, db)
+	if err != nil {
+		log.Fatalf("Unable to initialize statistics: %v\n", err)
+	}
 
 	// Set up router
 	r := mux.NewRouter()
-	r.HandleFunc("/record", nba.addPlayerRecord).Methods("POST")
-	r.HandleFunc("/aggregate/player", nba.getPlayerAggregate).Methods("GET")
-	r.HandleFunc("/aggregate/team", nba.getTeamAggregate).Methods("GET")
-	r.HandleFunc("/aggregate/players", nba.getAllPlayersAggregate).Methods("GET")
-	r.HandleFunc("/aggregate/teams", nba.getAllTeamsAggregate).Methods("GET")
+	r.HandleFunc("/record", nba.AddRecord).Methods("POST")
+	r.HandleFunc("/aggregate/player", nba.GetPlayerAggregate).Methods("GET")
+	r.HandleFunc("/aggregate/team", nba.GetTeamAggregate).Methods("GET")
+	r.HandleFunc("/aggregate/players", nba.GetAllPlayersAggregate).Methods("GET")
+	r.HandleFunc("/aggregate/teams", nba.GetAllTeamsAggregate).Methods("GET")
 
 	// Start server
 	log.Println("Server started at :8080")

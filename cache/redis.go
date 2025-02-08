@@ -1,8 +1,9 @@
 package cache
 
 import (
+	"context"
+
 	"github.com/go-redis/redis/v8"
-	"golang.org/x/net/context"
 )
 
 type RedisCache struct {

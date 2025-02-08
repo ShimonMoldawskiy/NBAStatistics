@@ -1,9 +1,11 @@
 package db
 
 import (
-	"github.com/jackc/pgx/v4"
+	"context"
+
 	"github.com/jackc/pgx/v4/pgxpool"
-	"golang.org/x/net/context"
+
+	"github.com/ShimonMoldawskiy/NBAStatistics/common"
 )
 
 type PostgresDatabase struct {
@@ -27,11 +29,11 @@ func (p *PostgresDatabase) Exec(query string, args ...interface{}) error {
 	return err
 }
 
-func (p *PostgresDatabase) QueryRow(query string, args ...interface{}) pgx.Row {
+func (p *PostgresDatabase) QueryRow(query string, args ...interface{}) common.Row {
 	return p.pool.QueryRow(p.ctx, query, args...)
 }
 
-func (p *PostgresDatabase) Query(query string, args ...interface{}) (pgx.Rows, error) {
+func (p *PostgresDatabase) Query(query string, args ...interface{}) (common.Rows, error) {
 	return p.pool.Query(p.ctx, query, args...)
 }
 
