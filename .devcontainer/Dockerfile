@@ -1,9 +1,9 @@
-# Use Docker-in-Docker base image
-FROM docker:23.0.6-dind
+FROM ubuntu:22.04
 
-# Install common tools
-RUN apk update && \
-    apk add --no-cache curl bash git
+# Install common dev tools as needed
+RUN apt-get update && apt-get install -y \
+    curl git bash ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 # 1) Install kubectl
 RUN curl -LO "https://dl.k8s.io/release/v1.26.3/bin/linux/amd64/kubectl" \
@@ -23,5 +23,5 @@ RUN curl -LO https://go.dev/dl/go1.20.5.linux-amd64.tar.gz \
 # Add Go to PATH
 ENV PATH="/usr/local/go/bin:$PATH"
 
-# By default, docker:dind runs dockerd in its entrypoint script.
-CMD ["dockerd-entrypoint.sh"]
+# Just use a shell as the default command
+CMD ["/bin/bash"]

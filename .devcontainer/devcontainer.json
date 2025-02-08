@@ -4,6 +4,9 @@
         "dockerfile": "Dockerfile",
         "context": "."
     },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-from-docker:1": {}
+    },
     "privileged": true,
     // Forward any ports you might need
     "forwardPorts": [8080, 5432, 6379],
