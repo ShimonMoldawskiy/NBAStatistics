@@ -1,6 +1,6 @@
 module github.com/ShimonMoldawskiy/NBAStatistics
 
-go 1.23
+go 1.20
 
 require (
 	github.com/gorilla/mux v1.8.1
