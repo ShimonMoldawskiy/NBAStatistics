@@ -9,7 +9,7 @@
 
 ### Add a New Record
 ```sh
-curl -X POST https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev:8080/record \
+curl -X POST https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/record \
     -H "Content-Type: application/json" \
     -d '{
          "player_id": 1,
@@ -26,22 +26,22 @@ curl -X POST https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev:8080/r
 
 ### Get Player Aggregate Statistics
 ```sh
-curl -X GET "https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev:8080/aggregate/player?playerId=1"
+curl -X GET "https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/aggregate/player?playerId=1"
 ```
 
 ### Get Team Aggregate Statistics
 ```sh
-curl -X GET "https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev:8080/aggregate/team?teamId=1"
+curl -X GET "https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/aggregate/team?teamId=1"
 ```
 
 ### Get All Players Aggregate Statistics
 ```sh
-curl -X GET https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev:8080/aggregate/players
+curl -X GET https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/aggregate/players
 ```
 
 ### Get All Teams Aggregate Statistics
 ```sh
-curl -X GET https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev:8080/aggregate/teams
+curl -X GET https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/aggregate/teams
 ```
 
 ## Application Architecture
@@ -65,7 +65,7 @@ A single entry point [https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.d
 ### Orchestration & Deployment
 - Containers are orchestrated via Kubernetes
 - Multiple replicas of the app run behind the load balancer
-- Rolling updates for zero-downtime deployments: Kubernetes will start new pods with the updated version, then gracefully shut down old pods once the new ones pass health checkspplication Architecture
+- Rolling updates for zero-downtime deployments: Kubernetes will start new pods with the updated version, then gracefully shut down old pods once the new ones pass health checks
 
 ## High-Level Architecture Diagram
                       ┌───────────────────────┐
