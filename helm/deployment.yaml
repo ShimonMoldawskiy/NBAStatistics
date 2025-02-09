@@ -17,7 +17,7 @@ spec:
         image: nba-statistics:latest
         imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 8080
+          - containerPort: 8443
         env:
           - name: POSTGRES_HOST
             value: my-postgres.default.svc.cluster.local
@@ -39,6 +39,6 @@ spec:
     app: nba-statistics
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 8443
+      targetPort: 8443
   type: ClusterIP

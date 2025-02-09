@@ -49,7 +49,5 @@ func (p Player) CacheKey() string {
 }
 
 func (p Player) DBQuery() string {
-	return fmt.Sprintf(`SELECT AVG(r.points), AVG(r.rebounds), AVG(r.assists), AVG(r.steals), AVG(r.blocks), AVG(r.turnovers), AVG(r.fouls), AVG(r.minutes)
-		FROM records r
-		WHERE r.player_id=%d`, p.ID)
+	return fmt.Sprintf(`SELECT AVG(r.points) AS points, AVG(r.rebounds) AS rebounds, AVG(r.assists) AS assists, AVG(r.steals) AS steals, AVG(r.blocks) AS blocks, AVG(r.turnovers) AS turnovers, AVG(r.fouls) AS fouls, AVG(r.minutes) AS minutes FROM records r WHERE r.player_id=%d;`, p.ID)
 }

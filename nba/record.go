@@ -7,7 +7,7 @@ import (
 )
 
 type Record struct {
-	ID        int     `json:"Id"`
+	ID        int     `json:"id"`
 	Points    int     `json:"points"`
 	Rebounds  int     `json:"rebounds"`
 	Assists   int     `json:"assists"`

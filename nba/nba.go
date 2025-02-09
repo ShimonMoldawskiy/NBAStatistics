@@ -18,7 +18,6 @@ type Cache interface {
 
 type Database interface {
 	Exec(query string, args ...interface{}) error
-	QueryRow(query string, args ...interface{}) common.Row
 	Query(query string, args ...interface{}) (common.Rows, error)
 	Close()
 }
@@ -97,14 +96,17 @@ func (nba *NBAStatistics) getAggregateData(a AggregatedObject) ([]byte, error) {
 
 	// Query db for aggregate data
 	var aggregate *AggregatedRecord = a.NewAggregatedRecord()
-	queryResult := nba.db.QueryRow(a.DBQuery())
-	if queryResult == nil {
-		return nil, fmt.Errorf("no data found for %s", a.CacheKey())
+	queryResult, err := nba.db.Query(a.DBQuery())
+	if err != nil {
+		return nil, fmt.Errorf("cannot get data for %s", a.CacheKey())
 	}
-	if err = queryResult.Scan(
-		aggregate.Points, aggregate.Rebounds, aggregate.Assists, aggregate.Steals, aggregate.Blocks,
-		aggregate.Turnovers, aggregate.Fouls, aggregate.Minutes); err != nil {
-		return nil, err
+	defer queryResult.Close()
+	if queryResult.Next() {
+		if err = queryResult.Scan(
+			&aggregate.Points, &aggregate.Rebounds, &aggregate.Assists, &aggregate.Steals, &aggregate.Blocks,
+			&aggregate.Turnovers, &aggregate.Fouls, &aggregate.Minutes); err != nil {
+			return nil, err
+		}
 	}
 
 	result, err := json.Marshal(*aggregate)
