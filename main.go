@@ -11,6 +11,9 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	_ "github.com/jackc/pgx/v4/stdlib"
+	_ "github.com/lib/pq"
+	"github.com/pressly/goose/v3"
 
 	"github.com/ShimonMoldawskiy/NBAStatistics/cache"
 	"github.com/ShimonMoldawskiy/NBAStatistics/db"
@@ -29,7 +32,7 @@ func main() {
 		}
 	}()
 
-	// Initialize db connection
+	// Initialize db connection, perform migrations if necessary
 	dbHost := os.Getenv("POSTGRES_HOST")
 	dbUser := os.Getenv("POSTGRES_USER")
 	dbPassword := os.Getenv("POSTGRES_PASSWORD")
@@ -40,7 +43,13 @@ func main() {
 	}
 
 	var err error
-	db, err := db.NewPostgresDatabase(ctx, fmt.Sprintf("postgresql://%s:%s@%s/%s", dbUser, dbPassword, dbHost, dbName))
+	connString := fmt.Sprintf("postgresql://%s:%s@%s/%s?sslmode=disable", dbUser, dbPassword, dbHost, dbName)
+	dbMigration, err := goose.OpenDBWithDriver("postgres", connString)
+	if err != nil {
+		log.Fatalf("Unable to migrate the database: %v\n", err)
+	}
+	dbMigration.Close()
+	db, err := db.NewPostgresDatabase(ctx, connString)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}

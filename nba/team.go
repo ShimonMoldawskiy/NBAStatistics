@@ -10,7 +10,7 @@ type Team struct {
 }
 
 func GetTeams(db Database) (map[int]Team, error) {
-	rows, err := db.Query("SELECT id, name FROM team")
+	rows, err := db.Query("SELECT id, name FROM teams")
 	if err != nil {
 		return nil, err
 	}
@@ -42,6 +42,7 @@ func (t Team) CacheKey() string {
 
 func (t Team) DBQuery() string {
 	return fmt.Sprintf(`SELECT AVG(r.points), AVG(r.rebounds), AVG(r.assists), AVG(r.steals), AVG(r.blocks), AVG(r.turnovers), AVG(r.fouls), AVG(r.minutes)
-		JOIN player p ON r.player_id = p.player_id
+		FROM records r
+		JOIN players p ON r.player_id = p.player_id
 		WHERE p.team_id=%d`, t.ID)
 }
