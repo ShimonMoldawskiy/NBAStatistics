@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nba-statistics-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nba-statistics
+  template:
+    metadata:
+      labels:
+        app: nba-statistics
+    spec:
+      containers:
+      - name: nba-statistics
+        image: nba-statistics:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+        env:
+          - name: POSTGRES_HOST
+            value: my-postgres.default.svc.cluster.local
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASSWORD
+            value: postgres123
+          - name: POSTGRES_DB
+            value: mydb
+          - name: REDIS_HOST
+            value: my-redis-master.default.svc.cluster.local
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nba-statistics-service
+spec:
+  selector:
+    app: nba-statistics
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

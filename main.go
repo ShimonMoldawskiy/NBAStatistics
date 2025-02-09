@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 
@@ -29,15 +30,28 @@ func main() {
 	}()
 
 	// Initialize db connection
+	dbHost := os.Getenv("POSTGRES_HOST")
+	dbUser := os.Getenv("POSTGRES_USER")
+	dbPassword := os.Getenv("POSTGRES_PASSWORD")
+	dbName := os.Getenv("POSTGRES_DB")
+
+	if dbHost == "" || dbUser == "" || dbPassword == "" || dbName == "" {
+		log.Fatal("Postgres environment variables are not set")
+	}
+
 	var err error
-	db, err := db.NewPostgresDatabase(ctx, "postgresql://user:password@primary-db-host/dbname")
+	db, err := db.NewPostgresDatabase(ctx, fmt.Sprintf("postgresql://%s:%s@%s/%s", dbUser, dbPassword, dbHost, dbName))
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
 	defer db.Close()
 
 	// Initialize cache connection
-	cache, err := cache.NewRedisCache(ctx, "redis-host:6379", "", 0)
+	redisHost := os.Getenv("REDIS_HOST")
+	if redisHost == "" {
+		log.Fatal("REDIS_HOST environment variable is not set")
+	}
+	cache, err := cache.NewRedisCache(ctx, redisHost+":6379", "", 0)
 	if err != nil {
 		log.Fatalf("Unable to connect to cache: %v\n", err)
 	}

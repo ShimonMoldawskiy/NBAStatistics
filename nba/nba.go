@@ -97,7 +97,11 @@ func (nba *NBAStatistics) getAggregateData(a AggregatedObject) ([]byte, error) {
 
 	// Query db for aggregate data
 	var aggregate *AggregatedRecord = a.NewAggregatedRecord()
-	if err = nba.db.QueryRow(a.DBQuery()).Scan(
+	queryResult := nba.db.QueryRow(a.DBQuery())
+	if queryResult == nil {
+		return nil, fmt.Errorf("no data found for %s", a.CacheKey())
+	}
+	if err = queryResult.Scan(
 		aggregate.Points, aggregate.Rebounds, aggregate.Assists, aggregate.Steals, aggregate.Blocks,
 		aggregate.Turnovers, aggregate.Fouls, aggregate.Minutes); err != nil {
 		return nil, err
