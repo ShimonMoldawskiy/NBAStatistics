@@ -1,0 +1,102 @@
+#%RAML 1.0
+title: NBA Statistics API
+version: v1
+baseUri: http://localhost:8080
+
+types:
+  PlayerAggregate:
+    type: object
+    properties:
+      player_id: integer
+      name: string
+      points: number
+      rebounds: number
+      assists: number
+      steals: number
+      blocks: number
+      turnovers: number
+      fouls: number
+      minutes: number
+
+  TeamAggregate:
+    type: object
+    properties:
+      team_id: integer
+      name: string
+      points: number
+      rebounds: number
+      assists: number
+      steals: number
+      blocks: number
+      turnovers: number
+      fouls: number
+      minutes: number
+
+  Record:
+    type: object
+    properties:
+      player_id: integer
+      points: integer
+      rebounds: integer
+      assists: integer
+      steals: integer
+      blocks: integer
+      turnovers: integer
+      fouls: integer
+      minutes: number
+
+/player:
+  get:
+    description: Get player aggregate statistics
+    queryParameters:
+      playerId:
+        type: integer
+        description: The ID of the player
+    responses:
+      200:
+        body:
+          application/json:
+            type: PlayerAggregate
+
+/team:
+  get:
+    description: Get team aggregate statistics
+    queryParameters:
+      teamId:
+        type: integer
+        description: The ID of the team
+    responses:
+      200:
+        body:
+          application/json:
+            type: TeamAggregate
+
+/players:
+  get:
+    description: Get all players aggregate statistics
+    responses:
+      200:
+        body:
+          application/json:
+            type: PlayerAggregate[]
+
+/teams:
+  get:
+    description: Get all teams aggregate statistics
+    responses:
+      200:
+        body:
+          application/json:
+            type: TeamAggregate[]
+
+/record:
+  post:
+    description: Add a new record
+    body:
+      application/json:
+        type: Record
+    responses:
+      201:
+        body:
+          application/json:
+            type: Record

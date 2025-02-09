@@ -1,5 +1,5 @@
 # Start with the official Golang image on Alpine Linux
-FROM golang:1.20-alpine as builder
+FROM golang:1.21-alpine as builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
