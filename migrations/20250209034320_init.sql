@@ -1,5 +1,8 @@
 -- +goose Up
 -- +goose StatementBegin
+CREATE DATABASE mydb;
+-- +goose StatementEnd
+-- +goose StatementBegin
 SELECT 'up SQL query';
 -- +goose StatementEnd
 -- +goose StatementBegin
