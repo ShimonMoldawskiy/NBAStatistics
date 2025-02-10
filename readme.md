@@ -9,7 +9,7 @@
 
 ### Add a New Record
 ```sh
-curl -k -X POST https://laughing-memory-x5wxvr5rgpv529wv-8443.app.github.dev/record -H "Content-Type: application/json" -d '{
+curl -k -X POST https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/record -H "Content-Type: application/json" -d '{
          \"id\": 1,
          \"points\": 30,
          \"rebounds\": 10,
@@ -24,28 +24,28 @@ curl -k -X POST https://laughing-memory-x5wxvr5rgpv529wv-8443.app.github.dev/rec
 
 ### Get Player Aggregate Statistics
 ```sh
-curl -k -X GET "https://laughing-memory-x5wxvr5rgpv529wv-8443.app.github.dev/aggregate/player?playerId=1"
+curl -k -X GET "https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/aggregate/player?playerId=1"
 ```
 
 ### Get Team Aggregate Statistics
 ```sh
-curl -k -X GET "https://laughing-memory-x5wxvr5rgpv529wv-8443.app.github.dev/aggregate/team?teamId=1"
+curl -k -X GET "https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/aggregate/team?teamId=1"
 ```
 
 ### Get All Players Aggregate Statistics
 ```sh
-curl -k -X GET https://laughing-memory-x5wxvr5rgpv529wv-8443.app.github.dev/aggregate/players
+curl -k -X GET https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/aggregate/players
 ```
 
 ### Get All Teams Aggregate Statistics
 ```sh
-curl -k -X GET https://laughing-memory-x5wxvr5rgpv529wv-8443.app.github.dev/aggregate/teams
+curl -k -X GET https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/aggregate/teams
 ```
 
 ## Application Architecture
 
 ### Load Balancer
-A single entry point [https://laughing-memory-x5wxvr5rgpv529wv-8443.app.github.dev/](https://laughing-memory-x5wxvr5rgpv529wv-8443.app.github.dev/) that distributes incoming HTTP requests across multiple instances of the Go application.
+A single entry point [https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/](https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev/) that distributes incoming HTTP requests across multiple instances of the Go application.
 
 ### Golang Application
 - Packaged and deployed in Docker containers; runs in several pods

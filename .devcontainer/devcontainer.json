@@ -9,7 +9,7 @@
     },
     "privileged": true,
     // Forward any ports you might need
-    "forwardPorts": [8443, 5432, 6379],
+    "forwardPorts": [8080, 5432, 6379],
     // Run as root to simplify usage
     "remoteUser": "root"
 }

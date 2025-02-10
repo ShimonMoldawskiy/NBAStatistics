@@ -81,6 +81,6 @@ func main() {
 	r.HandleFunc("/aggregate/teams", nba.GetAllTeamsAggregate).Methods("GET")
 
 	// Start server
-	log.Println("Server started at :8443")
-	log.Fatal(http.ListenAndServeTLS(":8443", "keys/certFile.pem", "keys/keyFile.pem", r))
+	log.Println("Server started at :8080")
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
