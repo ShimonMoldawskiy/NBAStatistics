@@ -125,7 +125,6 @@ A single entry point [https://laughing-memory-x5wxvr5rgpv529wv-8080.app.github.d
 - Add extensive logging based on ELK
 - Add metrics gathering and monitoring based on Prometheus/Grafana
 - Add unit and integration tests
-- Configure several app pods and load balancer
 - Create enchanced Helm templates
 - Implement user authentication and authorization
 - Secure Redis access

@@ -4,7 +4,7 @@ metadata:
   name: nba-statistics-deployment
   namespace: default
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: nba-statistics
@@ -121,3 +121,23 @@ spec:
       port: 6379
       targetPort: 6379
   type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nba-statistics-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: laughing-memory-x5wxvr5rgpv529wv-8080.app.github.dev
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nba-statistics-service
+            port:
+              number: 8080
